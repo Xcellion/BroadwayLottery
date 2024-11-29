@@ -1,14 +1,18 @@
 const clickOpenShow = () => {
   try {
     const openButtons = document.getElementsByClassName("enter-button");
-    if (openButtons.length > 0) openButtons[0].click();
-  } catch(e) {
-    console.log("Enter button not available", e);
+    if (openButtons.length > 0) {
+      openButtons[0].click();
+    } else {
+      window.close();
+    }
+  } catch (e) {
+    console.log("Error occurred", e);
   }
 };
 
-const fillForm = storage => {
-  if (storage.profile){
+const fillForm = (profile) => {
+  if (profile) {
     const firstName = document.getElementById("dlslot_name_first");
     const lastName = document.getElementById("dlslot_name_last");
     const ticketQty = document.getElementById("dlslot_ticket_qty");
@@ -21,15 +25,15 @@ const fillForm = storage => {
     const tos = document.getElementById("dlslot_agree");
 
     try {
-      firstName.value = storage.profile.fname;
-      lastName.value = storage.profile.lname;
-      ticketQty.options.selectedIndex = storage.profile.ticketQty;
-      email.value = storage.profile.email;
-      month.value = storage.profile.month;
-      day.value = storage.profile.day;
-      year.value = storage.profile.year;
-      zip.value = storage.profile.zip;
-      country.options.selectedIndex = storage.profile.country;
+      firstName.value = profile.fname;
+      lastName.value = profile.lname;
+      ticketQty.options.selectedIndex = profile.ticketQty;
+      email.value = profile.email;
+      month.value = profile.month;
+      day.value = profile.day;
+      year.value = profile.year;
+      zip.value = profile.zip;
+      country.options.selectedIndex = profile.country;
       tos.checked = true;
     } catch (e) {
       console.log("Form not available:", e.toString());
@@ -39,6 +43,6 @@ const fillForm = storage => {
 
 clickOpenShow();
 
-chrome.storage.sync.get("profile", storage => {
-  fillForm(storage);
+chrome.storage.sync.get("profiles", (profile) => {
+  fillForm(profile.profiles[0]);
 });
